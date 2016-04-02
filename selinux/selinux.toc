@@ -1,0 +1,12 @@
+\beamer@endinputifotherversion {3.24pt}
+\select@language {dutch}
+\beamer@sectionintoc {1}{Inhoud}{2}{0}{1}
+\beamer@sectionintoc {2}{Inleiding en terminologie}{3}{0}{2}
+\beamer@subsectionintoc {2}{1}{Wat is SELinux?}{3}{0}{2}
+\beamer@subsectionintoc {2}{2}{SELinux modes}{4}{0}{2}
+\beamer@subsectionintoc {2}{3}{SELinux {\bf algemene} policy}{5}{0}{2}
+\beamer@subsectionintoc {2}{4}{SELinux access control}{6}{0}{2}
+\beamer@sectionintoc {3}{Lastig?}{7}{0}{3}
+\beamer@sectionintoc {4}{Configuratie}{9}{0}{4}
+\beamer@sectionintoc {5}{Werkwijze en tooling}{10}{0}{5}
+\beamer@sectionintoc {6}{Referenties}{15}{0}{6}

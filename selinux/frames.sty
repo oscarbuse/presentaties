@@ -1,0 +1,92 @@
+% frames left in book have differnt hoffset
+% change page-width between frames 
+% ??? correct package?
+\usepackage{changepage}
+
+% white frame and style frame.
+% white frames are not shown in "beamer" mode, but are shown in "handout" mode (so they can be printed).
+\newenvironment{whiteframe}
+{
+\usebackgroundtemplate{}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}{\hrulefill}}}
+
+% do not show in "beamer" mode and never count them as frames
+\hoffset=-.4cm % restore left margin
+\begin{frame}<beamer:0>[noframenumbering,environment=whiteframe]
+%\begin{textblock*}{115mm}(30pt,10pt)
+%Notities:{\vskip-12pt\hrulefill}
+Notities:\\{\vskip-12pt\hrulefill}\\
+%\end{textblock*}
+\vspace{10pt}
+\setlength{\@fptop}{0pt}
+}
+{
+ \end{frame}
+\hoffset=0in % restore left margin
+}
+
+\newenvironment{whiteframefrag}
+{
+\usebackgroundtemplate{}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}{\hrulefill}}}
+
+% do not show in "beamer" mode and never count them as frames
+\hoffset=-.4cm % restore left margin
+\begin{frame}<beamer:0>[noframenumbering,fragile,environment=whiteframefrag]
+%\begin{textblock*}{115mm}(30pt,10pt)
+%Notities:\\{\hrulefill}\\
+Notities:\\{\vskip-12pt\hrulefill}\\
+%\end{textblock*}
+\vspace{10pt}
+%\setlength{\@fptop}{0pt}
+}
+{
+ \end{frame}
+\hoffset=0in % restore left margin
+}
+
+% sections get a "toc". This is shown in this frame, no framenumbering
+\newenvironment{sectionframe}
+{
+%\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
+%\setbeamertemplate{footline}[text line]{%
+%\parbox{\linewidth}{\vspace*{-8pt}\hfill}}
+\setbeamertemplate{navigation symbols}{}
+\pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
+\usebackgroundtemplate{\pgfuseimage{bg}}
+\begin{frame}[noframenumbering,environment=sectionframe]
+}
+{
+ \end{frame}
+}
+
+% the "regular" frame style
+\newenvironment{styleframe}
+{
+%\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
+\setbeamertemplate{navigation symbols}{}
+\pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
+\usebackgroundtemplate{\pgfuseimage{bg}}
+\begin{frame}
+}
+{
+ \end{frame}
+}
+
+\newenvironment{styleframefrag}
+{
+%\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
+\setbeamertemplate{navigation symbols}{}
+\pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
+\usebackgroundtemplate{\pgfuseimage{bg}}
+\begin{frame}[fragile,environment=styleframefrag]
+}
+{
+ \end{frame}
+}
