@@ -51,12 +51,34 @@ Notities:\\{\vskip-12pt\hrulefill}\\
 \newenvironment{sectionframe}
 {
 %\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
-%\setbeamertemplate{footline}[text line]{%
-%\parbox{\linewidth}{\vspace*{-8pt}\hfill}}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}{\hspace*{100pt}}SELinux ICT=smart\hfill}}
 \setbeamertemplate{navigation symbols}{}
 \pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
 \usebackgroundtemplate{\pgfuseimage{bg}}
 \begin{frame}[noframenumbering,environment=sectionframe]
+}
+{
+ \end{frame}
+}
+
+\newenvironment{frontframe}
+{
+\setbeamertemplate{headline}{%
+\leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=5ex,dp=5ex]{}%
+    \setbeamertemplate{headline}[text line]{%
+	\parbox{\linewidth}{\vspace*{-8pt}\hfill}}
+    \end{beamercolorbox}%
+  }
+}
+\setbeamertemplate{footline}[text line]{%
+\parbox{\linewidth}{\vspace*{-8pt}\hfill}}
+\setbeamertemplate{navigation symbols}{}
+\pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
+\usebackgroundtemplate{\pgfuseimage{bg}}
+\begin{frame}[noframenumbering,environment=frontframe]
 }
 {
  \end{frame}
@@ -67,7 +89,7 @@ Notities:\\{\vskip-12pt\hrulefill}\\
 {
 %\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
 \setbeamertemplate{footline}[text line]{%
-\parbox{\linewidth}{\vspace*{-8pt}{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
+\parbox{\linewidth}{\vspace*{-8pt}{\hspace*{100pt}}SELinux ICT=smart{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
 \setbeamertemplate{navigation symbols}{}
 \pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
 \usebackgroundtemplate{\pgfuseimage{bg}}
@@ -81,7 +103,7 @@ Notities:\\{\vskip-12pt\hrulefill}\\
 {
 %\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
 \setbeamertemplate{footline}[text line]{%
-\parbox{\linewidth}{\vspace*{-8pt}{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
+\parbox{\linewidth}{\vspace*{-8pt}{\hspace*{100pt}}SELinux ICT=smart{\hfill}slide {\insertframenumber} van {\inserttotalframenumber}}}
 \setbeamertemplate{navigation symbols}{}
 \pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
 \usebackgroundtemplate{\pgfuseimage{bg}}

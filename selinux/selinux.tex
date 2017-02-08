@@ -6,7 +6,7 @@
 
 % choose between handout format and beamer format.
 \documentclass[t,handout,xcolor={dvipsnames,table}]{beamer}
-%\documentclass[t,12pt,handout,xcolor=table]{beamer}
+%%\documentclass[t,12pt,handout,xcolor=table]{beamer}
 %\documentclass[t,xcolor=table]{beamer}
 
 %%%%%%%%%% styling
@@ -106,19 +106,51 @@
 \title{SELinux}
 %\subtitle{}
 \author{Oscar Buse\\
-{\small 9 juni 2015\\
-NLUG}}
+{\small 25 januari 2017\\
+ICT=Smart Nijmegen}}
 
 \date{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \begin{document}
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{section in toc}[ball unnumbered]
-\setbeamertemplate{subsection in toc}[default]
-    \begin{sectionframe}
+\setbeamertemplate{sections/subsections in toc}[default]
+    \begin{frontframe}
         \titlepage
+    \end{frontframe}
+
+    \begin{sectionframe}
+    \frametitle{Inhoudsopgave}
+\vspace{-14pt}
+    \fontsize{6}{9}\selectfont
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+        		\begin{block}{Inhoud}
+                    \tableofcontents[sections={1}]
+        		\end{block}
+                \begin{block}{Inleiding en terminologie}
+                        \tableofcontents[sections={2}]
+                \end{block}
+                \begin{block}{Lastig?}
+                         \tableofcontents[sections={3}]
+                \end{block}
+        \end{column}
+        \begin{column}{.5\textwidth}
+                \begin{block}{Configuratie}
+                         \tableofcontents[sections={4}]
+                \end{block}
+                \begin{block}{Praktisch}
+                         \tableofcontents[sections={5}]
+                \end{block}
+                \begin{block}{Concluderend}
+                         \tableofcontents[sections={6}]
+                \end{block}
+                \begin{block}{Referenties}
+                         \tableofcontents[sections={7}]
+                \end{block}
+        \end{column}
+    \end{columns}
     \end{sectionframe}
+
 
 %    \begin{sectionframe}
 %    \frametitle{Inhoudsopgave}
