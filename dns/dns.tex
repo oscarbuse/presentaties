@@ -1,0 +1,211 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% basis specials
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% make "impressive" work (only with pdf version 4..)
+\pdfminorversion=4
+
+% choose between handout format and beamer format.
+%\documentclass[t,12pt,handout,xcolor={dvipsnames,table}]{beamer}
+%\documentclass[t,12pt,handout,xcolor=table]{beamer}
+\documentclass[t,xcolor=table]{beamer}
+
+%%%%%%%%%% styling
+\usepackage{presentaties}
+\usepackage{frames}
+
+%%%%%%%%%%%%% Text placement
+%\setbeamerfont{block title}{size={}}
+\setbeamersize{text margin left=1.5cm,text margin right=1cm}
+\setbeamertemplate{frametitle}{\insertframetitle\vskip-11pt\vskip15pt\hfill\usebeamerfont{framesubtitle}\insertframesubtitle\vskip-24pt\hrulefill}
+\setbeamertemplate{sections/subsections in toc}[default]
+
+\setbeamerfont{section in toc}{size=\tiny}
+\setbeamerfont{subsection in toc}{size=\tiny}
+\renewcommand{\ttdefault}{pcr}
+
+%%%%%%%%%% description list
+% align left with our description list
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+\setbeamertemplate{description item}[align left]
+
+%%%%%%%%%%% blocks
+% round corners for blocks
+\setbeamertemplate{blocks}[rounded][shadow=false]
+% block title color, fonts in section/subsection in toc
+\setbeamercolor{block title}{use=structure,fg=kwalinux}
+% set example block color
+%\setbeamercolor*{block body example}{fg= blue, bg= blue!5}
+
+%%%%%%%%%%% special chars, html entities
+%\newcommand{\Ent}[1]{\char#1 }
+% for |, >, <
+\usepackage[T1]{fontenc}
+% \ding{nummer}, bv 122 = zwarte cursor
+\usepackage{pifont}
+% more specials: \Enter etc..
+\usepackage{keystroke}
+% \frown (not working?)
+%\DeclareMathAlphabet\mathbb{U}{msb}{m}{n}
+%\usepackage{MnSymbol}
+% smilies
+\usepackage{wasysym}
+
+% for Verbatim / terminal
+\usepackage{fancyvrb,listings}
+%\lstdefinestyle{terminal}{basicstyle=\ttfamily}
+\newenvironment{terminal}[1][]
+  { \VerbatimEnvironment%
+    \begin{Verbatim}[#1]}
+  { \end{Verbatim}  }
+
+% frame with border
+%\fvset{frame=single,framesep=1mm,fontfamily=courier,fontsize=\scriptsize,framerule=.2mm,numbersep=1mm,commandchars=\\\{\}}
+
+%%%%%%%%%%%%%%% % for terminal examples
+\usepackage{tcolorbox}
+\tcbset{%
+    noparskip,
+    colback=gray!10, %background color of the box
+    colframe=gray!40, %color of frame and title background
+}
+
+% translate
+\usepackage[dutch]{babel}
+
+% textblocks positioning
+%\usepackage[absolute,overlay]{textpos}
+
+%%%%%%%%%%%%%%% drawing
+\usepackage{tikz}
+% extra for trees (filesystem..)
+\usepackage{tikz-qtree}
+\usetikzlibrary{arrows, shapes, backgrounds}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,draw=black, fill=black!30, text width=3cm]
+\tikzstyle{process} = [rectangle, minimum width=0cm, minimum height=0cm, text centered, draw=black, fill=white, text width=1cm]
+\tikzstyle{button} = [minimum width=0cm, minimum height=0cm, text centered, fill=white, text width=1cm]
+\tikzstyle{every node}=[font=\small]
+%\tikzstyle{arrow} = [thick,->,>=stealth]
+% apply the 'remember picture' style. To avoid some typing, we'll apply
+% the style to all pictures.
+% this is to point correctly from a -> b (with nodes and arrows)
+\tikzstyle{every picture}+=[remember picture]
+% By default all math in TikZ nodes are set in inline mode. Change this to
+% displaystyle so that we don't get small fractions.
+\everymath{\displaystyle}
+
+
+%%%%%%%%%%% more packages
+% include pictures
+\usepackage{graphicx}
+% make clumns
+\usepackage{multicol}
+% ???
+\usepackage{booktabs}
+%\usepackage{parskip}
+%\setlength{\parskip}{\smallskipamount} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\title{DNS}
+\subtitle{Linuxnijmegen}
+\author{Oscar Buse\\
+{\small 13 jan 2015}}
+%oscar@kwalinux.nl\\
+%http://www.kwalinux.nl
+%}
+%\subject{LPI 101}
+\date{}
+
+% Show an outline of the beginning of a section.
+%\AtBeginSection[]
+%{
+%\setbeamertemplate{footline}[text line]{%
+%\parbox{\linewidth}{\vspace*{-8pt}\hfill}}
+%\setbeamertemplate{navigation symbols}{}
+%\pgfdeclareimage[width=\paperwidth,height=\paperheight]{bg}{blank}
+%\usebackgroundtemplate{\pgfuseimage{bg}}
+%  \begin{frame}<handout:0>[noframenumbering]
+%    \frametitle{Inhoudsopgave}
+%    \vspace{-14pt}
+%    \fontsize{6}{9}\selectfont
+%    \begin{columns}[t]
+%        \begin{column}{.5\textwidth}
+%                \begin{block}{Inleiding}
+%                        \tableofcontents[sections={1-4}]
+%                \end{block}
+%                \begin{block}{Hoe werkt DNS?}
+%                        \tableofcontents[sections={5-10}]
+%                \end{block}
+%		\begin{block}{De omgekeerde wereld}
+%                         \tableofcontents[sections={11}]
+%		\end{block}
+%                \begin{block}{Zonedata}
+%                         \tableofcontents[sections={12}]
+%                \end{block}
+%        \end{column}
+%        \begin{column}{.5\textwidth}
+%                \begin{block}{Tools}
+%                         \tableofcontents[currentsection,sections={13}]
+%                \end{block}
+%                \begin{block}{Configuratie van bind}
+%                         \tableofcontents[currentsection,sections={14-16}]
+%                \end{block}
+%                \begin{block}{Gevorderde technieken}
+%                         \tableofcontents[currentsection,sections={17}]
+%                \end{block}
+%                \begin{block}{Q\&A (Dokter DNS)}
+%                         \tableofcontents[currentsection,sections={18}]
+%                \end{block}
+%        \end{column}
+%    \end{columns}
+%  \end{frame}
+%} % /AtBeginSection
+%\usebackgroundtemplate%
+%{%
+%    \includegraphics[width=\paperwidth,height=\paperheight]{img/linux-timeline.png}%
+%}
+\makeatletter
+    \newenvironment{withoutheadline}{
+        \setbeamertemplate{headline}[default]
+        \def\beamer@entrycode{\vspace*{-\headheight}}
+    }{}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\begin{document}
+	\begin{frontframe}
+		\titlepage
+	\end{frontframe}
+
+	\begin{sectionframe}
+    \frametitle{Inhoudsopgave}
+\vspace{-14pt}
+    \fontsize{6}{9}\selectfont
+    \begin{columns}[t]
+        \begin{column}{.5\textwidth}
+		\begin{block}{Inleiding}
+            		\tableofcontents[sections={1}]
+		\end{block}
+                \begin{block}{Hoe werkt DNS?}
+                        \tableofcontents[sections={2}]
+                \end{block}
+		\begin{block}{De omgekeerde wereld}
+           		 \tableofcontents[sections={3}]
+		\end{block}
+        \end{column}
+        \begin{column}{.5\textwidth}
+                \begin{block}{Zonedata}
+                         \tableofcontents[sections={4}]
+                \end{block}
+                \begin{block}{Tools}
+                         \tableofcontents[sections={5}]
+                \end{block}
+                \begin{block}{Configuratie van bind}
+                         \tableofcontents[sections={6}]
+                \end{block}
+                \begin{block}{Q\&A (Dokter DNS)}
+                         \tableofcontents[sections={7}]
+                \end{block}
+        \end{column}
+    \end{columns}
+	\end{sectionframe}
+
+	\input{inl.tex}
+\end{document}
