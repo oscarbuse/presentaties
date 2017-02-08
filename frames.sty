@@ -1,9 +1,6 @@
-% frames left in book have differnt hoffset
-% change page-width between frames 
 % ??? correct package?
 \usepackage{changepage}
 
-% white frame and style frame.
 % white frames are not shown in "beamer" mode, but are shown in "handout" mode (so they can be printed).
 \newenvironment{whiteframe}
 {
@@ -62,6 +59,7 @@ Notities:\\{\vskip-12pt\hrulefill}\\
  \end{frame}
 }
 
+% bit bold but I don't want framenumbering on the frontpage
 \newenvironment{frontframe}
 {
 \setbeamertemplate{headline}{%
@@ -99,6 +97,7 @@ Notities:\\{\vskip-12pt\hrulefill}\\
  \end{frame}
 }
 
+% the "regular" frame style for verbatim
 \newenvironment{styleframefrag}
 {
 %\setbeamertemplate{frametitle}{\vskip2.1cm\insertframetitle\vskip-6pt\hrulefill}
