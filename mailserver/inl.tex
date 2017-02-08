@@ -1,0 +1,141 @@
+\section{Inleiding}
+
+\begin{frame}
+	\frametitle{Inleiding}
+Een eigen mailserver is leuk ende leerzaam maar:
+\begin{itemize}
+\pause
+\item {\it ''Great power gives great responsibility.''}
+\pause
+\item Belangrijk dat je eigen mailserver door andere mailservers serieus genomen wordt.\\
+\pause
+\item Hier enkele tips.
+\end{itemize}
+\end{frame}
+
+\section{Enkele tips}
+\subsection{spam?}
+\begin{frame}
+	\frametitle{Waarom wordt mijn mail als spam gezien?}
+\begin{itemize}
+\pause
+\item Je mailserver IP-adres is door de ontvanger op een blacklist gezet (..)
+	\pause
+	\begin{itemize}
+	  \item Nodig je actief af te melden
+	\end{itemize}
+\pause
+\item Je reverse DNS ''match niet''
+	\pause
+	\begin{itemize}
+	  \item Zorg dat DNS <=> Reverse DNS
+	  \pause
+      \item {\tt
+      mail.all-stars.nl -> 149.210.136.182
+      149.210.136.182   -> mail.all-stars.nl}
+	\end{itemize}
+\pause
+\item Je ''groet'' niet volgende de RFC. Zorg voor een juiste ''groet'' (HELO).
+	\pause
+	\begin{itemize}
+	\item In /etc/postfix/main.cf:\\
+    {\tt	myhostname = mail.all-stars.nl
+			smtpd\_banner = \$myhostname}
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Waarom wordt mijn mail als spam gezien?}
+\begin{itemize}
+\item Een ontvangende mailserver constateert dat er geen (of geen goed) {\it SPF-record} is.\\
+\pause
+SPF (Sender Policy Framework): een {\bf ontvangende} mailserver checkt of de {\bf afzender} (bv. oscar{\myat}kwalinux.nl) via de {\bf gekozen} SMTP-server mag versturen.
+    \begin{itemize}
+	\pause
+    \item In DNS voor kwalinux.nl is een SPF-record nodig:
+    {\tt kwalinux.nl.            599     IN      TXT     ''v=spf1 mx -all''}
+	\end{itemize}
+\pause
+~\\
+SPF checkt alleen de MAIL FROM (= envelope sender).\\
+''Sender ID'' (spf2..) kan ook de header checken.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Waarom wordt mijn mail als spam gezien?}
+\begin{itemize}
+\item Ontvangende mailserver constateert dat je mail niet gesigned is.\\
+\pause
+Met gesignde mail kan de ontvangende mailserver verifieren dat mail echt van het gebruikte domein (in het voorbeeld kwalinux.nl) afkomstig is. 
+	\pause
+	\begin{itemize}
+    \item Install en configureer opendkim (zie bv. http://tecadmin.net/setup-dkim-with-postfix-on-ubuntu-debian/)
+	\pause
+    \item In DNS voor bv. kwalinux.nl:\\
+	{\tiny
+	{\tt mail.\_domainkey.kwalinux.nl. 86400 IN   TXT     ''v=DKIM1\; k=rsa\; t=y\;
+p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJoWCzfnp32KftMreHN0mQkXc0ZQp4M+
+StkCSzPEJr5REq9/1wOjktO9R1NNPsU9SV0MtK2i8gbXMDbQJUQCe+vtJlcThGPatYMO8nIb
+BXkJ3Lcw6b6+Dmj6NwXPyDDAcUxObmggnfl9hXr2JG8Fhmi+x21LyAOCrwwNtw9T/opQIDAQAB''}}
+	\end{itemize}
+\end{itemize}
+SPF en DKIM: nog zwakheden (o.a. SPF met Forwarding, DKIM met ''double From:'' en beide geen feedback naar sender).\\
+\pause
+DMARC?
+\end{frame}
+
+\section{Samengevat}
+\begin{frame}
+    \frametitle{Samengevat}
+Samengevat de genoemde maatregelen:
+\begin{itemize}
+\pause
+\item zorg dat je niet op een blacklist staat. Zo ja, probeer je af te melden.
+\pause
+\item zorg voor goede reverse DNS.
+\pause
+\item zorg voor een goede ''groet'' (HELO).
+\pause
+\item maak een SPF-record voor je versturende domein.
+\pause
+\item sign uitgaande mail (DKIM).
+\pause
+\item DMARC?
+\end{itemize}
+\end{frame}
+
+\section{Conclusie}
+\begin{frame}
+    \frametitle{Conclusie}
+\begin{itemize}
+\pause
+\item Een eigen mailserver is leuk, flexibel maar:\\
+\pause
+	\begin{itemize}
+	\item Zorg voor een goede en up-2-date configuratie.\\
+	\pause
+	\item Blijf voldoen aan de anti-spam maatregelen die bv. de mailservers van gmail, yahoo en microsoft implementeren. 
+	\pause
+	\item Blijf op de hoogte van nieuwe ontwikkelingen.
+	\end{itemize}
+\pause
+\item Zorg dat je ook zelf je DNS kan updaten.
+\pause
+\item Test je setup!
+	\begin{itemize}
+    \pause
+	\item Bv. door vanaf je account een mail te sturen naar test{\myat}allaboutspam.com\\
+	Voorbeeld uitkomst: \url{www.all-stars.nl/mx.html}\\
+    \pause
+	\item Google op ''mailserver check''.\\
+		  Check bv. via \url{http://mail-server-test.online-domain-tools.com/}
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Vragen?}
+\begin{frame}
+    \frametitle{Vragen?}
+\end{frame}

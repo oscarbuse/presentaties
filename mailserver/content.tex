@@ -1,0 +1,46 @@
+\section{Werkwijze en tooling}
+\begin{frame}
+    \frametitle{Configuratie}
+\begin{itemize}
+\pause
+\item  hoe weet je nu wat een huidige policy is? -> \pause sesearch
+\pause
+{\tt sesearch -Ad -s httpd\_t -t httpd\_sys\_content\_t -c file}
+Verder spitten met: seinfo -ahttpdcontent -x
+\item niet zo interessant: bestaande policies hebben goede defaults.
+\item wel interessant: wat als je de policy wilt aanpassen of toevoegen? 
+semodule_unpackage: maar niet de bedoeling dat je de default policies wijzigt...wordt ontmoedigt
+semanage: config policies zonder de default policy te wijzigen. Straks meer
+\end{itemize}
+\end{frame}
+
+\section{Voorbeeld scenario}
+\begin{frame}
+    \frametitle{BackupPC}
+BackupPC is een handige grafische schil om rsync voor het maken van backups.
+Er is geen standaard policy voor dus die moeten we zelf maken. \\
+De stappen:
+\footnotesize
+\begin{itemize}
+\item definieer de file context (fc): in dit geval httpd\_sys\_content\_t \\
+Commando's: \\
+{\tt \# semanage fcontext -a -t httpd\_sys\_content\_t  \\
+\hspace{7pt} '/vol-thishost-1/BackupPC/pc(/.*)?' \\
+\# restorecon -Rv /vol-thishost-1/BackupPC/pc \\
+\# semanage fcontext -a -t httpd\_log\_t \\
+\hspace{7pt} '/var/log/BackupPC(/.*)?' \\
+\# restorecon -Rv /var/log/BackupPC/}
+\item Kijk naar denied regels in /var/log/audit/audit.log en stop in file -> backuppc.txt
+\item Maak van opgespaarde denied regels in file policy rules (met audit2allow): \\
+{\tt cat backuppc.txt  | audit2allow -M backuppc} geeft:
+	\begin{itemize}
+	\item De Type Enforcement rules (ascii): backuppc.te
+	\item Het binaire policy file met de type enforcement allow rules: backuppc.pp
+	\end{itemize}
+\item De nieuwe policy rules 
+\item {\tt \# semodule -i backuppc.pp}
+\item 
+Dit geeft ook een .te file (ascii, Type Enforcement rules)
+\bf{Let op:} niet alles wordt standaard gelogt...
+\end{itemize}
+\end{frame}

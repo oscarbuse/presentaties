@@ -1,0 +1,135 @@
+%%%%%%%%%%%%% Theming
+\usetheme[compress]{Berlin}
+\setbeamerfont*{subsection in head/foot}{size=\large}
+\makeatletter
+
+\setbeamertemplate{headline}
+{%
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}{section in head/foot}
+    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+  \end{beamercolorbox}%
+  %\ifbeamer@theme@subsection%
+  %  \begin{beamercolorbox}[colsep=1.5pt]{middle separation line head}
+  %  \end{beamercolorbox}
+  %  \begin{beamercolorbox}[ht=4.5ex,dp=1.5ex,%
+  %    center]{subsection in head/foot}
+  %    \usebeamerfont{subsection in head/foot}\insertsubsectionhead
+  %  \end{beamercolorbox}%
+  %\fi%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+}
+\setbeamertemplate{footline}
+{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+      \leavevmode{\usebeamerfont{author in head/foot}\inserttitle} \tt{LUGN44}%
+      \hfill%
+      \insertframenumber{}/\inserttotalframenumber\hspace*{2ex} 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    \end{beamercolorbox}
+}
+
+
+%\setbeamertemplate{headline}
+%{%
+%  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+%  \end{beamercolorbox}
+%  \begin{beamercolorbox}{section in head/foot}
+%    \vskip2pt\insertsectionnavigationhorizontal{\paperwidth}{}{}\vskip2pt
+%  \end{beamercolorbox}%
+%  \ifbeamer@theme@subsection%
+%    \begin{beamercolorbox}[colsep=1.5pt]{middle separation line head}
+%    \end{beamercolorbox}
+%    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+%      leftskip=.3cm,rightskip=.3cm plus1fil, center]{subsection in head/foot}
+%      \usebeamerfont{subsection in head/foot}\insertsubsectionhead
+%    \end{beamercolorbox}%
+%%  \fi%
+%  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+%  \end{beamercolorbox}
+%}
+\makeatother
+%\makeatletter
+%\setbeamertemplate{headline}
+%{
+%  \leavevmode%
+%  \hbox{%
+%  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+%    \usebeamerfont{author in head/foot}\insertsection
+%  \end{beamercolorbox}%
+%  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+%    \usebeamerfont{title in head/foot}\insertsubsection
+%  \end{beamercolorbox}%
+%  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+%    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+%  \end{beamercolorbox}}%
+%  \vskip0pt%
+%}
+\makeatother
+%\makeatletter
+%\beamer@theme@subsectionfalse
+%\makeatother
+% inner (???)
+\useinnertheme[shadow=true]{rounded}
+
+%%%%%%%%%%%%% Font
+%\usefonttheme[onlymath]{serif}
+% monospace font with bold (courier)
+\renewcommand{\ttdefault}{pcr}
+\usepackage[scaled=0.85]{beramono}%% monotype with bold variant  
+
+%%%%%%%%%%%%% Colors
+\usecolortheme{orchid}
+\usecolortheme{whale}
+\usecolortheme{wolverine}
+
+\definecolor{kwaprint}{HTML}{000000}
+\definecolor{kwablue}{cmyk}{1.0, 0.93, 0.18, 0.05}
+\definecolor{tuepurple}{cmyk}{0.14, 0.97, 0.51, 0.01}
+\definecolor{kwalightblue}{HTML}{2EA8F3}
+\definecolor{kwalinux}{HTML}{F26631}
+
+\setbeamercolor{title}{fg=kwablue,bg=}
+\setbeamercolor{background canvas}{bg=}
+% switch for printing 
+\setbeamercolor{palette primary}{fg=kwablue,bg=} % !<#> is transparency
+%\setbeamercolor{palette primary}{fg=kwaprint,bg=} % !<#> is transparency
+\setbeamercolor{palette secondary}{fg=kwablue, bg=kwalightblue}
+\setbeamercolor{palette tertiary}{fg=kwalightblue,bg=kwablue}
+\setbeamercolor{palette quaternary}{fg=tuepurple,bg=tuepurple}
+\setbeamercolor{example text}{fg=tuepurple, bg=blue}
+\setbeamercolor{footline}{fg=kwalinux, bg=}
+
+%%%%%%%%%%% Special chars, html entities %%%%
+%\newcommand{\Ent}[1]{\char#1 }
+%% for |, >, <
+\usepackage[T1]{fontenc}
+%% \ding{nummer}, bv 122 = zwarte cursor (used in vi.tex - lpi101)
+%\usepackage{pifont}
+%% more specials: \Enter etc..
+\usepackage{keystroke}
+%% smilies
+\usepackage{wasysym}
+%% nicer @ sign
+\newcommand*\myat{{\fontfamily{ptm}\selectfont @}}
+%% nicer copyright
+\usepackage{textcomp}
+
+% new commands
+\newcommand{\tab}{\hspace*{2em}}
+\newcommand{\kwahead}[1]{\hspace{0pt}\fontsize{8}{10}\selectfont #1}
+\newcommand{\notities}{
+\begin{whiteframe}
+\end{whiteframe}
+\begin{whiteframe}
+\end{whiteframe}
+}
+
+
