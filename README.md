@@ -1,3 +1,4 @@
 # presentaties
 presentaties
-* selinux
+* selinux - lastig?
+* mailserver - presentatie over "goed verzenden"
