@@ -5,12 +5,14 @@
 \begin{itemize}
 \item Terminologie
 \item Historie
-\item Wat is virtualisatie?
+\item Definitie van virtualisatie?
 \item KVM, QEMU en libvirt
-\item KVM - command line en grafisch
-\item Virtuele netwerken
-\item Storage pools en volumes
-\item Maken van een VM, installatie OS.
+\begin{itemize}
+	\item KVM - command line en grafisch
+	\item Virtuele netwerken
+	\item Storage pools en volumes
+	\item Maken van een VM, installatie OS.
+\end{itemize}
 \end{itemize}
 \end{styleframe}
 
@@ -25,29 +27,31 @@
 	\pause
 	\item[guest] de virtuele systemen (VM).
 	\pause
-	\item[hypervisor] software welke runt op het host systeem en de onderliggende hardware voor quest systemen virtualiseert (beschikbaar maakt middels {\it hardware emulatie}).
-	\pause
-	\item[hardware emulatie] hardware wat door het host systeem (de hypervisor) als virtuele hardware aan de guests wordt gepresenteerd.
-	\pause
-	\item[container] ''lichtgewicht VM..'' (later meer).
+	\includegraphics[width=5cm]{img/VMware-schema.png}\\
 \end{description}
 \end{styleframe}
 
 \begin{styleframe}
     \frametitle{}
-In een eenvoudig plaatje:\\
-\includegraphics[width=5cm]{img/VMware-schema.png}\\
-\pause
-Nog wat meer termen:
 \begin{description}[blaat]
-	\item[DRS] Distributed Resource Scheduler. aan/uitschakelen hosts, migreren guests.
+	\item[hypervisor] software welke runt op het host systeem en de onderliggende hardware voor quest systemen virtualiseert (beschikbaar maakt middels {\it hardware emulatie}).
+	\includegraphics[width=5cm]{img/400px-Hyperviseur.png}\\
 	\pause
-	\item[HA] High Availability. Detecteren host failure, migreren guests.
+	\item[hardware emulatie] hardware wat door het host systeem (de hypervisor) als virtuele hardware aan de guests wordt gepresenteerd.
 	\pause
-	\item [volledige ({\it full}) virtualisatie]. Alles gevirtualiseerd: guest ziet functioneel echte hardware. Best lastig in de begindagen (VMware was goed bezig (straks meer)).
-	\pause
-	\item [para virtualisatie]: de guest heeft een aangepaste kernel (Xen).
+	\item[container] ''lichtgewicht VM..'' (later meer).
 \end{description}
+%\pause
+%Nog wat meer termen:
+%\begin{description}[blaat]
+%	\item[DRS] Distributed Resource Scheduler. aan/uitschakelen hosts, migreren guests.
+%	\pause
+%	\item[HA] High Availability. Detecteren host failure, migreren guests.
+%	\pause
+%	\item [volledige ({\it full}) virtualisatie]. Alles gevirtualiseerd: guest ziet functioneel echte hardware. Best lastig in de begindagen (VMware was goed bezig (straks meer)).
+%	\pause
+%	\item [para virtualisatie]: de guest heeft een aangepaste kernel (Xen).
+%\end{description}
 \end{styleframe}
 
 \subsection{Historie}
@@ -57,15 +61,15 @@ Nog wat meer termen:
 	\item V\'o\'or virtualisatie: veel ''losse'' servers:
 	\pause
 	\begin{itemize}
-		\item Verspilling van CPU, RAM, disk, netwerk en (niet te vergeten) power resources (InterNLnet ging het stroomverbruik van het datacenter met meer dan 20\% naar beneden (90\% \-> 6x\%)).
+		\item Verspilling van CPU, RAM, disk, netwerk en (niet te vergeten) power resources (bij InterNLnet ging het stroomverbruik van het datacenter met meer dan 20\% naar beneden (90\% \-> 6x\%)).
 		\pause
 	\end{itemize}
-	\item Pioniers: Xen en VMware:
+	\item Belangrijk (in het begin): Xen en VMware:
 	\pause
 	\begin{itemize}
-		\item Xen: para virtualisatie: aangepaste kernel voor guest systeem nodig.
+		\item Xen: {\it para virtualisatie:} aangepaste kernel voor {\bf guest} systeem nodig.
 		\pause
-		\item VMware: hypervisor ESX. '{\it binary translation}: guest calls door de hypervisor vertaald (geen aangepast guest systeem nodig).
+		\item VMware: hypervisor ESX. '{\it binary translation}': guest calls door de hypervisor vertaald (geen aangepast guest systeem nodig).
 	\end{itemize}
 \end{itemize}
 \end{styleframe}
@@ -98,37 +102,52 @@ Er is niet 1 definitie: erg afhankelijk van implementatie:
 \pause
 \begin{itemize}
 	\item para?
+	\item binary translation?
 	\item volledig?
 	\item containers?
 \end{itemize}
 \pause
-Wel belangrijk dat je de terminologie en mogelijkheden kent.
+Belangrijk dat je de terminologie en mogelijkheden kent.
 \end{styleframe}
 
 \section{KVM}
 \subsection {KVM, QEMU en libvirt}
 \begin{styleframe}
     \frametitle{KVM, QEMU en libvirt}
+{\scriptsize
 \begin{itemize}
 	\item KVM:
 		\begin{itemize}
 			\item Onderdeel van de kernel van het host systeem.
+			\pause
 			\item Geen complete hypervisor.
+			\pause
 			\item Maakt gebruik van de hardware virtualisatie (VT-x/AMD-V). Verzorgt de mapping tussen fysieke en virtuele CPU's.
+			\pause
 		\end{itemize}
 	\item QEMU (Quick EMUlator):
 		\begin{itemize}
 			\item Software op zichzelf. Emuleert hardware (ook disken, netwerk, PCI, USB, ...)
+			\pause
 			\item Werkt samen met KVM maar kan ook geheel zelfstandig als hypervisor dienen.
+			\pause
 		\end{itemize}
 	\item libvirt: software voor het managen van de hypervisor en guests.
 		\begin{itemize}
 			\item daemon libvirtd
+			\pause
+			\item xml voor het definieren van VM's (en containers), netwerk, storage
+			\pause
 			\item cli -en grafische tools
+			\pause
+			\item voor KVM, QEMU, Xen, VMWare ESX, LXC, ...
+			\pause
 		\end{itemize}
 \end{itemize}
-Hypervisor = combinatie van KVM en QEMU.
+Hypervisor is hier een combinatie van KVM en QEMU.
+}
 \end{styleframe}
+
 
 \subsection {Installatie}
 \begin{styleframefrag}
@@ -136,9 +155,9 @@ Hypervisor = combinatie van KVM en QEMU.
 Bijvoorbeeld voor CentOS:
 \scriptsize
 \begin{verbatim}
-yum -y install qemu-kvm libvirt virt-install bridge-utils
-systemctl start libvirtd
-systemctl enable libvirtd
+# yum -y install qemu-kvm libvirt virt-install bridge-utils
+# systemctl enable libvirtd
+# systemctl start libvirtd
 \end{verbatim}
 \end{styleframefrag}
 
@@ -177,23 +196,63 @@ Met libvirt kun je storage pools maken.
 Maak een nieuwe pool:
 \scriptsize
 \begin{verbatim}
-mkdir /var/lib/libvirt/pool1
-virsh pool-define-as pool1 dir - - - - /var/lib/libvirt/pool1
-virsh pool-autostart pool1
-virsh pool-start pool1
-virsh vol-create-as pool1 volume1.img 10G                                                                                   
+# mkdir /var/lib/libvirt/pool1
+# virsh
+virsh# pool-define-as pool1 dir - - - - /var/lib/libvirt/pool1
+(virsh# pool-define-as pool1 --type dir \
+                            --target /var/lib/libvirt/pool1)
+virsh# pool-autostart pool1
+virsh# pool-start pool1
+virsh# vol-create-as pool1 debian8.img 10G                                                                                   
 \end{verbatim}
 \end{styleframefrag}
 
-\subsection {maak een VM}
+\subsection {Maak een VM}
 \begin{styleframefrag}
-    \frametitle{maak een VM}
+    \frametitle{Maak een VM}
 \scriptsize
 \begin{verbatim}
-virt-install -r 1024 --vcpus=1 -n debian8 \
+# virt-install -r 1024 --vcpus=1 -n debian8 \
     -f /var/lib/libvirt/pool1/debian8.img \
     --cdrom /home/user1/Downloads/debian-8.5.0-amd64-netinst.iso
 \end{verbatim}
+Enkele commando's:\\
+\verb!virsh# list --all!\\
+\pause
+\verb!virsh# list --autostart!\\
+\pause
+\verb!virsh# autostart debian8!\\
+\pause
+\verb!virsh# destroy debian8!\\
+\pause
+\verb!virsh# start debian8!\\
+\pause
+\verb!virsh# undefine debian!\\
+\pause
+\verb!# virsh help | less!\\
+Verkrijg het IP-adres:\\
+\verb!virsh# domifaddr debian8!
+\end{styleframefrag}
+
+\begin{styleframefrag}
+    \frametitle{Migreren van VM's}
+\scriptsize
+\pause
+{\tt \# virsh destroy ''name\_of\_vm''}\\
+\pause
+{\tt \# virsh destroy ''name\_of\_vm''}\\
+\pause
+{\tt \# scp /tmp/''vmname''.xml ''hostX:''}\\
+\pause
+{\tt \# scp /var/lib/libvirt/images/''vmname''.img ''hostX:''}\\
+\pause
+~\\
+Op de ''hostX'': verwijder uuid's in xml-file.\\
+\pause
+{\tt hostX:\# virsh define ''vmname''.xml}\\
+\pause
+{\tt hostX:\# virsh start ''vmname''}\\
+\pause
 \end{styleframefrag}
 
 \section{Conlusies}
@@ -209,7 +268,8 @@ De functie van de hypervisor is wat bleekjes tegenwoordig. Enkele nadelen:
     \pause
     \item Relatief veel resources nodig per VM (vergeleken met containers).
     \pause
-    \item DRS en HA niet meer zo'n USP's: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
+%    \item DRS en HA niet meer zo'n USP's: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
+    \item management niet meer zo'n USP's: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
     \pause
     \item Security is ook sterk verbeterd mbt containers. Zeker sinds de extra instructies op de CPU (VT-x/AMD-V).
     \pause
@@ -220,7 +280,7 @@ De functie van de hypervisor is wat bleekjes tegenwoordig. Enkele nadelen:
 \subsection {Kubernetes}
 \begin{styleframe}
     \frametitle{}
-We gaan dan ook niet alleen kijken naar de ''gewone'' (hypervisor) virtualisatie (met KVM) maar ook naar containers:
+We kijken dan ook niet alleen naar de ''gewone'' (hypervisor) virtualisatie (met KVM) maar ook naar containers:
 \pause
 \begin{itemize}
     \item Vandaag: KVM (+ QEMU en libvirt)

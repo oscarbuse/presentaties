@@ -50,6 +50,21 @@
 \setbeamercolor{example text}{fg=tuepurple, bg=blue}
 \setbeamercolor{footline}{fg=kwalinux, bg=}
 
+%%%%%%%%%%% Special chars, html entities %%%%
+%\newcommand{\Ent}[1]{\char#1 }
+%% for |, >, <
+\usepackage[T1]{fontenc}
+%% \ding{nummer}, bv 122 = zwarte cursor (used in vi.tex - lpi101)
+%\usepackage{pifont}
+%% more specials: \Enter etc..
+\usepackage{keystroke}
+%% smilies
+\usepackage{wasysym}
+%% nicer @ sign
+\newcommand*\myat{{\fontfamily{ptm}\selectfont @}}
+%% nicer copyright
+\usepackage{textcomp}
+
 % new commands
 \newcommand{\tab}{\hspace*{2em}}
 \newcommand{\kwahead}[1]{\hspace{0pt}\fontsize{8}{10}\selectfont #1}
