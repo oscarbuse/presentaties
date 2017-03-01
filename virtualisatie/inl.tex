@@ -1,22 +1,22 @@
-\section{Inhoud}
+\section{Inleiding}
 \subsection{Overzicht onderwerpen}
 \begin{styleframe}
 	\frametitle{Overzicht onderwerpen}
 \begin{itemize}
-\item Terminologie
-\item Historie
+\item Terminologie.
+\item Historie.
 \item Definitie van virtualisatie?
-\item KVM, QEMU en libvirt
+\item KVM, QEMU en libvirt.
 \begin{itemize}
-	\item KVM - command line en grafisch
-	\item Virtuele netwerken
-	\item Storage pools en volumes
+	\item KVM - command line en grafisch.
+	\item Virtuele netwerken.
+	\item Storage pools en volumes.
 	\item Maken van een VM, installatie OS.
 \end{itemize}
+\item Concluderend.
 \end{itemize}
 \end{styleframe}
 
-\section{Inleiding}
 \subsection{Terminologie}
 \begin{styleframe}
     \frametitle{Terminologie}
@@ -25,7 +25,7 @@
 	\pause
 	\item[host] het ''host'' systeem: het systeem wat guest systemen ondersteunt.
 	\pause
-	\item[guest] de virtuele systemen (VM).
+	\item[guest] de virtuele systemen (VM's).
 	\pause
 	\includegraphics[width=5cm]{img/VMware-schema.png}\\
 \end{description}
@@ -34,10 +34,11 @@
 \begin{styleframe}
     \frametitle{}
 \begin{description}[blaat]
-	\item[hypervisor] software welke runt op het host systeem en de onderliggende hardware voor quest systemen virtualiseert (beschikbaar maakt middels {\it hardware emulatie}).
-	\includegraphics[width=5cm]{img/400px-Hyperviseur.png}\\
+	\item[hardware emulatie] hardware wat door het host systeem (de {it hypervisor}) als virtuele hardware aan de guests wordt gepresenteerd.
 	\pause
-	\item[hardware emulatie] hardware wat door het host systeem (de hypervisor) als virtuele hardware aan de guests wordt gepresenteerd.
+	\item[hypervisor] software welke runt op het host systeem en de onderliggende hardware voor guest systemen virtualiseert (beschikbaar maakt middels hardware emulatie).
+	\pause
+	\includegraphics[width=5cm]{img/400px-Hyperviseur.png}\\
 	\pause
 	\item[container] ''lichtgewicht VM..'' (later meer).
 \end{description}
@@ -63,6 +64,14 @@
 	\begin{itemize}
 		\item Verspilling van CPU, RAM, disk, netwerk en (niet te vergeten) power resources (bij InterNLnet ging het stroomverbruik van het datacenter met meer dan 20\% naar beneden (90\% \-> 6x\%)).
 		\pause
+		\item Hoge kosten.
+		\pause
+		\item Lange ''Time to market''.
+		\pause
+		\item Meer storingsgevoelig (..).
+		\pause
+		\item ...
+		\pause
 	\end{itemize}
 	\item Belangrijk (in het begin): Xen en VMware:
 	\pause
@@ -81,9 +90,9 @@
 	\item HVM (Hardware Virtual Machine). Bv. Intel VT-x en AMD-V (vanaf ca. 2006).
 	\pause
 	\begin{itemize}
-		\item extra instructies op de CPU speciaal voor virtualisatie.
+		\item Extra instructies op de CPU speciaal voor virtualisatie.
 		\pause
-		\item Maakte volledige virtualisatie makkelijker (juist vanwege de complexe x86 architectuur was VT-x/AMD-V erg welkom).
+		\item Maakt volledige virtualisatie makkelijker (juist vanwege de complexe x86 architectuur was VT-x/AMD-V erg welkom).
 		\pause
 		\item Tevens een enorme snelheidswinst.
 		\pause
@@ -101,13 +110,13 @@
 Er is niet 1 definitie: erg afhankelijk van implementatie:
 \pause
 \begin{itemize}
-	\item para?
-	\item binary translation?
+	\item \sout{para?}
+	\item \sout{binary translation?}
 	\item volledig?
 	\item containers?
 \end{itemize}
 \pause
-Belangrijk dat je de terminologie en mogelijkheden kent.
+Belangrijk dat je de mogelijkheden kent :)
 \end{styleframe}
 
 \section{KVM}
@@ -122,12 +131,12 @@ Belangrijk dat je de terminologie en mogelijkheden kent.
 			\pause
 			\item Geen complete hypervisor.
 			\pause
-			\item Maakt gebruik van de hardware virtualisatie (VT-x/AMD-V). Verzorgt de mapping tussen fysieke en virtuele CPU's.
+			\item Maakt gebruik van hardware virtualisatie (VT-x/AMD-V). Verzorgt de mapping tussen fysieke en virtuele CPU's.
 			\pause
 		\end{itemize}
 	\item QEMU (Quick EMUlator):
 		\begin{itemize}
-			\item Software op zichzelf. Emuleert hardware (ook disken, netwerk, PCI, USB, ...)
+			\item Compleet op zichzelf. Emuleert hardware (ook disken, netwerk, PCI, USB, ...)
 			\pause
 			\item Werkt samen met KVM maar kan ook geheel zelfstandig als hypervisor dienen.
 			\pause
@@ -149,9 +158,9 @@ Hypervisor is hier een combinatie van KVM en QEMU.
 \end{styleframe}
 
 
-\subsection {Installatie}
+\subsection {Installatie KVM/Qemu/libvirt}
 \begin{styleframefrag}
-    \frametitle{Installatie}
+    \frametitle{Installatie KVM/Qemu/libvirt}
 Bijvoorbeeld voor CentOS:
 \scriptsize
 \begin{verbatim}
@@ -159,52 +168,89 @@ Bijvoorbeeld voor CentOS:
 # systemctl enable libvirtd
 # systemctl start libvirtd
 \end{verbatim}
+\pause
+~\\
+Ook nodig voor het maken van een VM:
+\begin{itemize}
+	\item Netwerk (automatisch wordt bij de install virbr0 (192.168.122.1/24) actief (voor het default virtueel netwerk)).
+	\item Storage (''pools'').
+\end{itemize}
+\pause
+~\\
+Keuze voor beheer uit cli ({\tt virsh}) en/of grafische tool ({\tt virt-manager}).
 \end{styleframefrag}
-
-\subsection {{\tt virsh} en virt-manager}
-\begin{styleframe}
-    \frametitle{virsh}
-Keuze om VM's te maken/deleten etc.. uit cli ({\tt virsh}) en grafische tool ({\tt virt-manager}).
-\end{styleframe}
 
 \subsection {Virtueel netwerk}
 \begin{styleframefrag}
     \frametitle{Virtueel netwerk}
-VM's kunnen we een eigen virtueel netwerk geven.
-Dit kan makkelijk met virt-manager.
-Maar kan ook met cli en een template:
+VM's kunnen we een eigen virtueel netwerk geven.\\
+\pause
+Dit kan met virt-manager (grafisch).\\
+\pause
+Maar kan ook met een template en de cli:\\
 \pause
 \scriptsize
-\begin{verbatim}
-virsh# net-list
-virsh# net-list --all
-virsh# net-define /root/netwerk1.xml
-virsh# net-autostart netwerk1
-virsh# net-start netwerk1
-virsh# net-info netwerk1
-\end{verbatim}
+\verb!# cat /root/netwerk1.xml!\\
+\tiny
+\verb!<network>!\\
+\verb!  <name>netwerk1</name>!\\
+\verb!  <bridge name='virbr1' stp='on' delay ='0' />!\\
+\verb!  <forward mode='nat'>!\\
+\verb!    <nat>!\\
+\verb!      port start='1024' end='65535' />!\\
+\verb!    </nat>!\\
+\verb!  </forward>!\\
+\verb!  <ip address='192.168.1.1' netmask='255.255.255.0'>!\\
+\verb!    <dhcp>!\\
+\verb!      <range start='192.168.1.2' end='192.168.1.10' />!\\
+\verb!    </dhcp>!\\
+\verb!  </ip>!\\
+\verb!</network>!\\
+\scriptsize
+Zie ook: \url{http://libvirt.org/formatnetwork.html}\\
+\pause
+\verb!# virsh!\\
+\pause
+\verb!virsh# net-define /root/netwerk1.xml!\\
+\pause
+\verb!virsh# net-autostart netwerk1!\\
+\pause
+\verb!virsh# net-start netwerk1!\\
+\pause
+\verb!virsh# net-info netwerk1!\\
+\pause
+\verb!virsh# net-list!\\
+\pause
+\verb!virsh# net-list --all!\\
 \end{styleframefrag}
 
 \subsection{Storage pools en volumes}
 \begin{styleframefrag}
     \frametitle{Storage pools en volumes}
 Met libvirt kun je storage pools maken.
+\pause
 \begin{itemize}
 	\item de default storage pool is in /var/lib/libvirt/images
-	\item een storage pool bevat storage volumes (de disken)
+	\pause
+	\item een storage pool bevat storage volumes (de images)
+	\pause
 \end{itemize}
-Maak een nieuwe pool:
+Maak een nieuwe pool:\\
 \scriptsize
-\begin{verbatim}
-# mkdir /var/lib/libvirt/pool1
-# virsh
-virsh# pool-define-as pool1 dir - - - - /var/lib/libvirt/pool1
-(virsh# pool-define-as pool1 --type dir \
-                            --target /var/lib/libvirt/pool1)
-virsh# pool-autostart pool1
-virsh# pool-start pool1
-virsh# vol-create-as pool1 debian8.img 10G                                                                                   
-\end{verbatim}
+\verb!# mkdir /var/lib/libvirt/pool1!\\
+\pause
+\verb!# virsh!\\
+\pause
+\verb!virsh# pool-define-as pool1 dir - - - - /var/lib/libvirt/pool1!\\
+\pause
+(\verb!virsh# pool-define-as pool1 --type dir \!
+\verb!                             --target /var/lib/libvirt/pool1!)\\
+\pause
+\verb!virsh# pool-autostart pool1!\\
+\pause
+\verb!virsh# pool-start pool1!\\
+\pause
+\verb!virsh# vol-create-as pool1 debian8.raw 10G!
 \end{styleframefrag}
 
 \subsection {Maak een VM}
@@ -213,9 +259,18 @@ virsh# vol-create-as pool1 debian8.img 10G
 \scriptsize
 \begin{verbatim}
 # virt-install -r 1024 --vcpus=1 -n debian8 \
-    -f /var/lib/libvirt/pool1/debian8.img \
-    --cdrom /home/user1/Downloads/debian-8.5.0-amd64-netinst.iso
+  -f /var/lib/libvirt/pool1/debian8.raw \
+  --network bridge=virbr1 \
+  --os-type=linux \
+  --os-variant=generic \
+  --initrd-inject=/root/preseed.cfg --extra-args="auto" --name d-i \
+  <redhat>
+  --initrd-inject=/var/tmp/debian-minimal.ks \
+  --extra-args="ks=file:/debian-minimal.ks \
+  </redhat>
+  --cdrom /home/user1/Downloads/debian-8.5.0-amd64-netinst.iso
 \end{verbatim}
+\pause
 Enkele commando's:\\
 \verb!virsh# list --all!\\
 \pause
@@ -223,13 +278,15 @@ Enkele commando's:\\
 \pause
 \verb!virsh# autostart debian8!\\
 \pause
-\verb!virsh# destroy debian8!\\
-\pause
 \verb!virsh# start debian8!\\
 \pause
-\verb!virsh# undefine debian!\\
+\verb!virsh# destroy debian8!\\
+\pause
+\verb!virsh# undefine debian8!\\
 \pause
 \verb!# virsh help | less!\\
+\pause
+~\\
 Verkrijg het IP-adres:\\
 \verb!virsh# domifaddr debian8!
 \end{styleframefrag}
@@ -237,8 +294,6 @@ Verkrijg het IP-adres:\\
 \begin{styleframefrag}
     \frametitle{Migreren van VM's}
 \scriptsize
-\pause
-{\tt \# virsh destroy ''name\_of\_vm''}\\
 \pause
 {\tt \# virsh destroy ''name\_of\_vm''}\\
 \pause
@@ -252,10 +307,9 @@ Op de ''hostX'': verwijder uuid's in xml-file.\\
 {\tt hostX:\# virsh define ''vmname''.xml}\\
 \pause
 {\tt hostX:\# virsh start ''vmname''}\\
-\pause
 \end{styleframefrag}
 
-\section{Conlusies}
+\section{Concluderend}
 \subsection {Hypervisor vs container}
 \begin{styleframe}
     \frametitle{Hypervisor vs container}
@@ -264,12 +318,12 @@ De functie van de hypervisor is wat bleekjes tegenwoordig. Enkele nadelen:
 \begin{itemize}
     \item Netwerk/disk access via ''paravirtualized drivers'' (PV drivers). Verschillende PV-drivers nodig per hypervisor (VMware's ESX, Xen, KVM) \'en per guest OS (windows 7, windows 10, redhat, ubuntu etc..) \-> veel code!
     \pause
-    \item OS-patching in je VM's!
+    \item OS-patching in je VM's
     \pause
     \item Relatief veel resources nodig per VM (vergeleken met containers).
     \pause
 %    \item DRS en HA niet meer zo'n USP's: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
-    \item management niet meer zo'n USP's: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
+    \item Management niet meer zo'n USP: er komen steeds meer ''container management'' tools zoals bv. ''Kubernetes''.
     \pause
     \item Security is ook sterk verbeterd mbt containers. Zeker sinds de extra instructies op de CPU (VT-x/AMD-V).
     \pause
@@ -288,6 +342,11 @@ We kijken dan ook niet alleen naar de ''gewone'' (hypervisor) virtualisatie (met
     \item Volgende keer: containers (docker)
     \pause
     \item Daarna: Kubernetes (..)
+    \pause
 \end{itemize}
+~\\
+\begin{center}
+\hspace{-20pt} \Huge Bier?
+\end{center}
 \end{styleframe}
 

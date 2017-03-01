@@ -6,12 +6,18 @@
 
 % choose between handout format and beamer format.
 %\documentclass[t,handout,xcolor={dvipsnames,table}]{beamer}
-\documentclass[t,12pt,handout,xcolor=table]{beamer}
+%
+% handout
+\documentclass[t,11pt,handout,xcolor=table]{beamer}
+% slides
 %\documentclass[t,xcolor=table]{beamer}
 
 %%%%%%%%%% styling
 \usepackage{../presentaties}
 \usepackage{../frames}
+
+% strikethrough
+\usepackage[normalem]{ulem}
 
 %%%%%%%%%%%%% Text placement
 %\setbeamerfont{block title}{size={}}
@@ -104,7 +110,7 @@
 %\setlength{\parskip}{\smallskipamount} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \title{Virtualisatie}
-%\subtitle{}
+\subtitle{en KVM}
 \author{Oscar Buse\\
 {\small 14 februari 2017\\
 NLUG}}
@@ -113,33 +119,32 @@ NLUG}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \begin{document}
-\setbeamertemplate{sections/subsections in toc}[default]
+%\setbeamertemplate{sections/subsections in toc}[default]
+\usebackgroundtemplate{%
+	\includegraphics[width=\paperwidth,height=\paperheight]{img/cloud.jpg}}
     \begin{frontframe}
         \titlepage
     \end{frontframe}
 
-    \begin{sectionframe}
-    \frametitle{Inhoudsopgave}
-\vspace{-14pt}
-    \fontsize{6}{9}\selectfont
-    \begin{columns}[t]
-        \begin{column}{.5\textwidth}
-        		\begin{block}{Inhoud}
-                    \tableofcontents[sections={1}]
-        		\end{block}
-                \begin{block}{Inleiding}
-                        \tableofcontents[sections={2}]
-                \end{block}
-                \begin{block}{KVM}
-                         \tableofcontents[sections={3}]
-                \end{block}
-        \end{column}
-        \begin{column}{.5\textwidth}
-                \begin{block}{Concluderend}
-                         \tableofcontents[sections={4}]
-                \end{block}
-        \end{column}
-    \end{columns}
-    \end{sectionframe}
+%    \begin{sectionframe}
+%    \frametitle{Inhoudsopgave}
+%\vspace{-14pt}
+%    \fontsize{6}{9}\selectfont
+%    \begin{columns}[t]
+%        \begin{column}{.5\textwidth}
+%        		\begin{block}{Inhoud}
+%                    \tableofcontents[sections={1}]
+%        		\end{block}
+%                \begin{block}{Inleiding}
+%                        \tableofcontents[sections={2}]
+%                \end{block}
+%                \begin{block}{KVM}
+%                         \tableofcontents[sections={3}]
+%                \end{block}
+%                \begin{block}{Concluderend}
+%                \end{block}
+%        \end{column}
+%    \end{columns}
+%    \end{sectionframe}
     \input{inl.tex}
 \end{document}
