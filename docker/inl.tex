@@ -171,7 +171,7 @@ Docker maakt gebruik van cgroups en namespaces:
 % niet persistent. Wel vanaf v1.6 create custom cgroup outside docker and attach a new container to it.
 	\end{itemize}
 	\pause
-	\item[namespaces] Gelijke namen mogelijk door isolatie van de namespace:
+	\item[namespaces] Gelijke namen mogelijk door isolatie van de namespace. Enkele voorbeelden:
 	\begin{itemize}
 		\pause
 		\item mount namespace (bv. / in container != / in host != / in andere container)
@@ -450,7 +450,7 @@ EOF
 	\pause
 	\item beperk container interactie (focus op container interactie onderling).
 	\pause
-	\item denk aan patching/upgrading your ''base'' images.
+	\item denk aan patching/upgrading van de ''base'' images.
 	\pause
 	\item pas read-only toe waar mogelijk.
 	\pause
