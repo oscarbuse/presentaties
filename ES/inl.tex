@@ -1,0 +1,334 @@
+\section{Inleiding}
+\subsection{}
+\begin{styleframe}
+	\frametitle{Inleiding}
+Dit praatje gaat over Elasticsearch.\\
+\pause
+De onderwerpen die aan bod komen:
+\begin{itemize}[<+>]
+	\item Wat is Elasticsearch?
+	\item Waarom Elasticsearch?
+	\item Installatie.
+	\item Terminologie.
+	\item Wat is je data en hoe wordt deze data opgeslagen?
+	\item Werken met Elasticsearch. Theorie met voorbeelden
+	\item Een toepassing.
+	\item De voor- en nadelen van Elasticsearch.
+	\item Referenties.
+%	\item Best practices.
+\end{itemize}
+\end{styleframe}
+
+\section{Wat is ES?}
+\subsection{}
+\begin{styleframe}
+    \frametitle{Wat is Elasticsearch?}
+\pause
+Definitie: gedistribueerde tekst zoek (en analyse) software met http interface (''RESTful'') en json format.\\
+\pause
+%%Elasticsearch is document oriented, meaning that it stores entire objects or documents.
+%It not only stores them, but also indexes the contents of each document in order to
+%make them searchable. In Elasticsearch, you index, search, sort, and filter documents
+%—not rows of columnar data. This is a fundamentally different way of thinking about
+%data and is one of the reasons Elasticsearch can perform complex full-text search.
+Enkele eigenschappen: 
+\begin{itemize}[<+>]
+%	\item Bijna realtime (\textasciitilde 1 sec vertraging).
+%	\pause
+	\item Zeer snel (\textbf{alles} wordt default ge-indexeerd).
+	\item Geheugen intensief.
+	\item ES is document (object) georienteerd (ipv rij/kolom georienteerd).
+	\item Goed voor full text search.
+	\item Ingebouwde score bij relevantie.
+	\item Ingebouwde {\it highlighting}.
+	\item Distributed (horizontaal schaalbaar, meerdere nodes).
+	\item Ook voor data aggregatie en analyse.
+\end{itemize}
+\pause
+Is allemaal niet nieuw maar het zit wel allemaal samen in 1 applicatie.
+\end{styleframe}
+
+\section{Waarom ES?}
+\subsection{}
+\begin{styleframe}
+	\frametitle{Waarom Elasticsearch?}
+Zaak om eerst te kijken wat je kunt hebben aan ES.
+\begin{itemize}[<+>]
+	\item Zie o.a. de eerder genoemde eigenschappen.
+	\item Je hebt niks aan data als je er niet wat mee doet.
+	\item Leegte in log analyse.. Splunk kan bv. veel maar is duur..
+	\item Open Source.
+%	\item Cloud vraagt om meer log analyse.
+%	\pause
+	\item Maken van {\it data-informed} beslissingen.
+\end{itemize}
+~\\
+\pause
+Wat kan ES wat bv. niet kan in SQL?\\
+\pause
+Niet de juiste vraag: gebruik de tool die voldoet voor jouw situatie.\\
+\pause
+Eenmaal wat meer bekend geef ik een opsomming van de voor- en nadelen.
+\end{styleframe}
+
+\section{Installatie}
+\subsection{}
+\begin{styleframe}
+	\frametitle{Installatie}
+\begin{itemize}[<+>]
+	\item Eenvoudig met downloaden van tgz-file of packages (rpm of deb).
+	\item Default luistert Elasticsearch op 127.0.0.1, port 9200.
+	\item Ook bij een cluster: 1 interface naar je data.\\
+	\item Config in /etc/elasticsearch
+	\item OS configuratie, o.a.:
+	\begin{itemize}
+		\item disable swap (gebruik {\it ES only} servers/VM's). \only<1>{Only 1st slide}
+		\item zorg voor genoeg open files (max aantal file descriptors, /proc/security/limits.conf).
+		\item zorg voor genoeg mogelijke processen (ulimit -u).
+	\end{itemize}
+	\item[] Veel wordt al gedaan via de package installers. Check settings met de documentatie (zie referenties).
+	\item verschil development en productie omgeving (bv. met setting network.host)
+\end{itemize}
+\end{styleframe}
+
+\section{Terminologie}
+\subsection{}
+\begin{styleframe}
+	\frametitle{Terminologie}
+\pause
+\begin{description}[<+>][documentbla]
+	\item[Lucene] ES is afgeleid van Apache's Lucene: software voor text indexering en zoeken.
+	\item[cluster] een verzameling van servers (nodes) wat elasticsearch mogelijk maakt.
+	\item[node] 1 server (of VM) als onderdeel van een cluster.
+	\item[index] verzameling data met overeenkomstige kenmerken. Vergelijk met een \textbf{database} in SQL.
+	\item[type] verzameling data binnen een index. Vergelijk met een \textbf{table} in SQL.
+	\item[field] veld binnen een type. Vergelijk met \textbf{kolom} in SQL.
+	\item[document] de basis-eenheid van informatie in ES. Geformatteerd in JavaScript Object Notatie (JSON).\\
+\end{description}
+\pause
+{\scriptsize{\tt\textbf{Relational DB => Databases => Tables => Rows => Columns\\
+Elasticsearch => Indices => Types => Documents => Fields}}}
+\end{styleframe}
+
+
+\subsection{}
+\begin{styleframe}
+\begin{description}[<+>][documentbla]
+	\frametitle{}
+	\item[term] een unieke ge-indexeerde waarde (''Bla'' is wat anders dan ''bla'')
+	\item[shard]
+	\begin{itemize}
+		\item unit welke een deel van alle data bevat (goed voor opdelen en verdelen van data).
+		\item 1 shard kan maximaal 2.147.483.519 {\it documenten} bevatten.
+		\item primary en replica shards.
+		\item aantal primary shards bepaald hoe groot je db kan zijn.
+		\item replica shards zijn readonly. Goed voor redundancy en performance (parallel gebruik van replicas).
+		\item default 5 primary en 5 replica shards per index (db).
+		\item minimaal 1 shard per node.
+		\item aantal primary shards ligt vast, aantal replicas kan gewijzigd worden.
+	\end{itemize}
+\end{description}
+\end{styleframe}
+
+\subsection{}
+\begin{styleframe}
+	\frametitle{Data opslag}
+Hoe wordt de data opgeslagen? 
+\begin{itemize}[<+>]
+	\item opslag op het filesysteem.
+	\item veel gebruik gemaakt van compressie.
+	\item data in JSON records.
+	\item mapping voor type velden (default: text + keyword (vroeger: string)).
+	\item \textbf{Alles} (elk ''field'') wordt ge-indexeerd en is doorzoekbaar.
+	\item indexeren met ''inverted'' indexen: (''terms'' naar documents).
+	\item verschil in ''full text fields'' (match search) en ''exact value fields'' (term search).
+	\begin{itemize}
+		\item {\it analyzed} en {\it not analyzed}
+		\item Bv. string => text ({\it analyzed}) + keyword (exact, {\it not analyzed})
+	\end{itemize}
+\end{itemize}
+\end{styleframe}
+
+\section{Werken met ES}
+\subsection{}
+\begin{styleframe}
+	\frametitle{Werken met ES}
+\pause
+Data wordt opgeslagen, opgevraagd, gewijzigd met een REST API (HTTP requests), denk hierbij aan bv.:
+\begin{itemize}[<+>]
+	\item Document API: voor CRUD operaties.
+	\item Cluster API: checken van health, status en verkrijgen van statistieken van je cluster/nodes
+	\item Index API: beheer je database (bv. DELETE, CREATE).
+	\item Search API: doe (geavanceerde) zoek acties.
+\end{itemize}
+\pause
+Diverse hulpmiddelen voor deze API's: curl, python/perl modules, websites (Kibana), ...\\\
+\end{styleframe}
+
+\subsection{}
+\begin{styleframefrag}
+	\frametitle{Document API}
+Deze API ondersteunt diverse CRUD operaties.
+\begin{itemize}[<+>]
+	\item Url heeft de vorm:\\
+{\scriptsize {\tt \textbf{\hspace{1em}POST|PUT|GET|DELETE host:9200/index/type/id -d \{ \} }}}
+	\item POST: index (insert met auto-created id)\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XPOST '127.0.0.1:9200/lugn/mensen'}}}\\
+{\scriptsize {\tt \textbf{\hspace{2em}-d '\{''naam'': ''Harry Nak''\}'}}}
+	\item PUT: index (insert, geef zelf id op), update (index met zelfde id)\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XPUT '127.0.0.1:9200/lugn/mensen/1'}}}\\
+{\scriptsize {\tt \textbf{\hspace{2em}-d '\{''naam'': ''Harry Nak''\}'}}}
+	\item GET: Bv. een hele index (database) doorzoeken kan met:\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XGET 127.0.0.1:9200/lugn/\_search?q=zoekstring}}}
+\end{itemize}
+\end{styleframefrag}
+
+\subsection{}
+\begin{styleframefrag}
+	\frametitle{}
+\begin{itemize}[<+>]
+	\item DELETE\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XDELETE 127.0.0.1:9200/lugn?pretty'}}}\\
+~\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XDELETE 127.0.0.1:9200/lugn/mensen/2?pretty'}}}\\
+~\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XPOST}}}\\
+{\scriptsize {\tt \textbf{\hspace{2em}127.0.0.1:9200/lugn/mensen/\_delete\_by\_query?pretty \textbackslash}}}\\
+{\scriptsize {\tt \textbf{\hspace{2em}-d '\{''query'':\{''match'':\{''naam'':''Harry''\}\}\}'}}}
+~\\
+	\item UPDATE: (onder de motorkap DELETE en CREATE)\\
+{\scriptsize {\tt \textbf{\hspace{1em}curl -XPOST 127.0.0.1:9200/lugn/mensen/1/\_update \textbackslash}}}\\
+{\scriptsize {\tt \textbf{\hspace{2em}-d '\{''doc'':\{''naam'':''Harry A. Nak''\}\}'}}}
+\end{itemize}
+\end{styleframefrag}
+
+% date_typen?
+\subsection{}
+\begin{styleframefrag}
+	\frametitle{}
+Zoektechnieken:
+%URI searches
+query-string search en ''(json) request body'' search. 
+\begin{itemize}[<+>]
+	\item woord, woo* woor?  
+%match_phrase
+	\item fieldname:woord (bv. usernaam:harry)
+	\item query (match + scores) en filters (match yes or no, geen scores)
+	\item match (analyzed, text) en term (exact, keyword)) queries.
+	\item aggregate, average, sort
+	\item meer .. (Query DSL: flexibele query language in json format. Bv.:
+{\scriptsize
+\begin{verbatim}
+  "query":{
+    "filter":{
+      "geo_distance":{
+        "distance":"100km",
+        "location":[32.052098, 76.649294]
+      }
+    }
+  }
+\end{verbatim}
+}
+	\item meer .. (boosts, suggestions, completion)
+\end{itemize}
+%inverted index: maps ''terms'' -> documents
+%de index is opgebouwd uit kleinere bouwstenen : shards (''scherven''). 
+%(''normal (forward) index'': documents -> content)
+%shards en replicas
+%
+%As a general rule, use query clauses for full-text search or for any condition that should affect the relevance score, and use filters for everything else.
+\end{styleframefrag}
+
+\section{Een ''toepassing''}
+\subsection{}
+\begin{styleframe}
+    \frametitle{Een ''toepassing''}
+\pause
+\begin{itemize}[<+>]
+	\item sql2es.py
+	\item search.py
+\end{itemize}
+\end{styleframe}
+
+\section{Afrondend}
+\subsection{}
+\begin{styleframe}
+    \frametitle{De voor- en nadelen van Elasticsearch.}  
+\begin{itemize}[<+>]
+	\item - veiligheid? (geen authenticatie).
+	\item - geen transactie (commits/rollback) model: minder controle over consistentie van de data.
+	\item - relatief nieuw (''moet zich nog bewijzen'').
+	\item - query DSL kan erg complex worden (maar geldt bv. ook voor SQL).
+	\item + Zeer schaalbaar, snel (alles is een index).
+	\item + Lage drempel maar ook zeer flexibele en geavanceerde mogelijkheden.
+	\item + veel OOTB: full text search, scoring, aggregatie, suggestie, ''result highlighting''.
+\end{itemize}
+\end{styleframe}
+
+\begin{styleframe}
+    \frametitle{De voor- en nadelen van Elasticsearch.}  
+\begin{itemize}[<+>]
+	\item + goede integratie met Logstash en Kibana (ELK-stack).
+	\item + object storage (ipv key/value).
+	\item + veel geolocatie ''features''.
+\end{itemize}
+% diff met sql:
+% - es does do a "relevant" search ("rock climbing"), most relevant search.
+% - aggregate more powerful then group by
+% - schaalbaarder
+% - alles is een index: sneller
+% - orientatie op full text search
+\pause
+Als met alles gebruik de juiste tool voor de juiste toepassing, bv.:
+\begin{itemize}[<+>]
+	\item betalingstransacties in een RDBMS
+	\item zoeken van text in veel documenten: Elasticsearch
+\end{itemize}
+
+\end{styleframe}
+
+%\section{Voorbeelden}
+%\subsection{}
+%\begin{styleframefrag}
+%    \frametitle{Voorbeelden}
+%\pause
+%\begin{description}[documentbla]
+%\item[indices] \verb!curl '127.0.0.1:9200/_cat/indices?v'! Overzicht ''databases''
+%\item[show ''all''] \verb!curl '127.0.0.1:9200/sw/_search?pretty=true'! Toon records
+%\end{description}
+%\end{styleframefrag}
+
+
+%\section{Best practices}
+%\subsection{}
+%\begin{styleframe}
+%    \frametitle{Best practices}
+%\pause
+%\end{styleframe}
+
+\subsection{}
+\begin{styleframe}
+	\frametitle{}
+Voorbeelden van toepassingen:
+\begin{itemize}[<+>]
+	\item search engines voor bv. websites.
+	\item search en analyseren van allerlei logging (weblog, syslog, klant-data, ...).
+	\item wikipedia, the guardian, stack overflow, github, reisavonturen, ...
+\end{itemize}
+\end{styleframe}
+
+
+%\section{Referenties}
+\subsection{}
+\begin{styleframe}
+    \frametitle{Referenties}
+\begin{itemize}
+	\item Website: \url{https://www.elastic.co}
+	\item Leren: \url{https://www.elastic.co/learn}
+	\item Setup/config: \url{https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html}
+	\item OS settings: \url{https://www.elastic.co/guide/en/elasticsearch/reference/current/system-config.html}
+	\item Cheatsheet: \url{http://elasticsearch-cheatsheet.jolicode.com/}
+\end{itemize}
+\pause
+\large Bier?
+\end{styleframe}
