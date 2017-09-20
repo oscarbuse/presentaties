@@ -3,5 +3,5 @@
 * mailserver - over "goed verzenden"
 * selinux - lastig?
 * virtualisatie - deel 1 (o.a. KVM)
-* virtualisatie - deel 2 (docker)
+* docker - virtualisatie deel 2
 * ES - ElasticSearch
